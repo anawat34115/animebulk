@@ -1,0 +1,67 @@
+---
+interface Props {
+  title: string;
+  character: string;
+  anime: string;
+  description: string;
+  slug: string;
+  difficulty: 'beginner' | 'intermediate' | 'advanced';
+  duration: string;
+  goal: string;
+  heroImage?: string;
+}
+
+const { title, character, anime, description, slug, difficulty, duration, goal, heroImage } = Astro.props;
+
+const difficultyColors = {
+  beginner: 'badge-difficulty-beginner',
+  intermediate: 'badge-difficulty-intermediate',
+  advanced: 'badge-difficulty-advanced',
+};
+---
+
+<article class="card group flex flex-col">
+  <a href={`/workouts/${slug}`} class="block relative overflow-hidden aspect-[16/9] bg-dark-600">
+    {heroImage ? (
+      <img
+        src={heroImage}
+        alt={`${character} workout`}
+        class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+        loading="lazy"
+      />
+    ) : (
+      <div class="w-full h-full flex items-center justify-center bg-gradient-to-br from-dark-600 to-dark-700">
+        <span class="text-6xl font-display text-brand-500/30">{character[0]}</span>
+      </div>
+    )}
+    <div class="absolute inset-0 bg-gradient-to-t from-dark-900/80 to-transparent" />
+    <div class="absolute bottom-3 left-3 flex gap-2">
+      <span class={difficultyColors[difficulty]}>{difficulty}</span>
+    </div>
+  </a>
+
+  <div class="flex flex-col flex-1 p-5">
+    <div class="flex items-center gap-2 mb-2">
+      <span class="badge-anime">{anime}</span>
+    </div>
+    <h3 class="text-white font-bold text-lg leading-snug mb-2 group-hover:text-brand-400 transition-colors">
+      <a href={`/workouts/${slug}`}>{title}</a>
+    </h3>
+    <p class="text-gray-400 text-sm leading-relaxed flex-1 mb-4">{description}</p>
+
+    <div class="flex items-center justify-between text-xs text-gray-500 border-t border-white/5 pt-3">
+      <span class="flex items-center gap-1">
+        <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+        </svg>
+        {duration}
+      </span>
+      <span class="flex items-center gap-1">
+        <svg class="w-3.5 h-3.5 text-brand-500" fill="currentColor" viewBox="0 0 24 24">
+          <path d="M13 10V3L4 14h7v7l9-11h-7z" />
+        </svg>
+        {goal}
+      </span>
+    </div>
+  </div>
+</article>

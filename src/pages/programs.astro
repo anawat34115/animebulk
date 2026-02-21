@@ -1,0 +1,166 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import EmailCapture from '../components/EmailCapture.astro';
+
+const programs = [
+  {
+    id: 'saiyan-hypertrophy',
+    title: 'The 12-Week Saiyan Hypertrophy Program',
+    character: 'Goku / Vegeta',
+    anime: 'Dragon Ball Z',
+    description: 'Build Saiyan-level muscle mass with this progressive overload hypertrophy program. 4 days/week, full periodization, nutrition guide included.',
+    price: '$27',
+    originalPrice: '$47',
+    features: [
+      '12-week progressive program',
+      'Full exercise video library',
+      'Saiyan nutrition & meal plan',
+      'Supplement guide',
+      'Printable workout sheets',
+      'Lifetime updates',
+    ],
+    badge: 'Best Seller',
+    badgeColor: 'bg-brand-500',
+    emoji: '⚡',
+  },
+  {
+    id: 'demon-slayer-agility',
+    title: 'Demon Slayer Agility & Conditioning',
+    character: 'Tanjiro Kamado',
+    anime: 'Demon Slayer',
+    description: 'Train like a Demon Slayer with this calisthenics + agility program. Build explosive speed, endurance, and functional strength.',
+    price: '$22',
+    originalPrice: '$37',
+    features: [
+      '8-week calisthenics program',
+      'Breathing technique guide',
+      'Agility ladder drills',
+      'Bodyweight progressions',
+      'Recovery & mobility plan',
+      'PDF + printable format',
+    ],
+    badge: 'Popular',
+    badgeColor: 'bg-blue-500',
+    emoji: '🌊',
+  },
+  {
+    id: 'ninja-endurance',
+    title: 'Ninja Endurance: The Naruto Running Program',
+    character: 'Naruto Uzumaki',
+    anime: 'Naruto',
+    description: 'Build legendary stamina and never-give-up conditioning with this 6-week endurance and functional fitness program.',
+    price: '$19',
+    originalPrice: '$29',
+    features: [
+      '6-week endurance program',
+      'Running & cardio protocols',
+      'Functional strength circuits',
+      'Ramen-approved nutrition guide',
+      'Mental toughness framework',
+      'PDF download',
+    ],
+    badge: 'New',
+    badgeColor: 'bg-green-500',
+    emoji: '🍥',
+  },
+];
+---
+
+<BaseLayout
+  title="Anime Fitness Programs — Premium Workout PDFs"
+  description="Premium anime-inspired workout programs. Download the Saiyan Hypertrophy Program, Demon Slayer Agility Routine, and more. Science-backed, character-inspired training."
+>
+  <div class="pt-16">
+    <!-- Header -->
+    <div class="bg-dark-800 border-b border-white/5 py-16">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+        <p class="text-brand-400 text-sm font-bold uppercase tracking-widest mb-3">Premium Programs</p>
+        <h1 class="text-4xl md:text-6xl font-display tracking-wide text-white mb-4">
+          Level Up Your <span class="text-gradient">Training</span>
+        </h1>
+        <p class="text-gray-400 text-lg max-w-xl mx-auto">
+          Full PDF programs with periodization, nutrition guides, and everything you need to train like an anime character — for real.
+        </p>
+      </div>
+    </div>
+
+    <!-- Programs Grid -->
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
+      <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+        {programs.map((program, i) => (
+          <div class={`relative bg-dark-700 border rounded-2xl overflow-hidden flex flex-col transition-all duration-300 hover:-translate-y-1 ${i === 0 ? 'border-brand-500/50 glow-brand' : 'border-white/10 hover:border-brand-500/30'}`}>
+            {/* Badge */}
+            <div class="absolute top-4 right-4">
+              <span class={`${program.badgeColor} text-white text-xs font-bold px-3 py-1 rounded-full`}>
+                {program.badge}
+              </span>
+            </div>
+
+            <div class="p-8 flex flex-col flex-1">
+              {/* Emoji & Anime */}
+              <div class="flex items-center gap-3 mb-4">
+                <span class="text-4xl">{program.emoji}</span>
+                <span class="badge-anime">{program.anime}</span>
+              </div>
+
+              <h2 class="text-xl font-bold text-white mb-2 leading-snug">{program.title}</h2>
+              <p class="text-gray-400 text-sm mb-1">Character: <span class="text-gray-300 font-semibold">{program.character}</span></p>
+              <p class="text-gray-400 text-sm leading-relaxed mb-6">{program.description}</p>
+
+              {/* Features */}
+              <ul class="space-y-2 mb-8 flex-1">
+                {program.features.map(feature => (
+                  <li class="flex items-center gap-2 text-sm text-gray-300">
+                    <svg class="w-4 h-4 text-brand-500 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+                    </svg>
+                    {feature}
+                  </li>
+                ))}
+              </ul>
+
+              {/* Price */}
+              <div class="flex items-baseline gap-3 mb-4">
+                <span class="text-3xl font-display text-white">{program.price}</span>
+                <span class="text-gray-500 line-through text-sm">{program.originalPrice}</span>
+                <span class="text-green-400 text-xs font-bold">One-time</span>
+              </div>
+
+              <button
+                class={`w-full py-3 rounded-lg font-bold text-sm transition-all duration-200 hover:scale-105 active:scale-95 ${
+                  i === 0
+                    ? 'bg-brand-500 hover:bg-brand-600 text-white'
+                    : 'bg-white/10 hover:bg-brand-500 text-white border border-white/10 hover:border-brand-500'
+                }`}
+                onclick={`alert('Payment integration coming soon! Join the newsletter to get notified when ${program.title} launches.')`}
+              >
+                Get Instant Access →
+              </button>
+            </div>
+          </div>
+        ))}
+      </div>
+
+      <!-- Trust Signals -->
+      <div class="mt-16 grid grid-cols-1 md:grid-cols-3 gap-6 text-center">
+        {[
+          { icon: '🔒', title: 'Secure Checkout', desc: 'All transactions are encrypted and secure.' },
+          { icon: '📥', title: 'Instant Download', desc: 'Get your PDF immediately after purchase.' },
+          { icon: '♾️', title: 'Lifetime Access', desc: 'Buy once, access forever including updates.' },
+        ].map(item => (
+          <div class="bg-dark-700/50 border border-white/5 rounded-xl p-6">
+            <div class="text-3xl mb-3">{item.icon}</div>
+            <h3 class="text-white font-bold mb-1">{item.title}</h3>
+            <p class="text-gray-500 text-sm">{item.desc}</p>
+          </div>
+        ))}
+      </div>
+    </div>
+
+    <!-- Email Capture -->
+    <EmailCapture
+      title="Not Ready to Buy? Get the Free Version First"
+      subtitle="Subscribe and get a free sample workout from each program — no credit card needed."
+    />
+  </div>
+</BaseLayout>

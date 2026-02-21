@@ -1,0 +1,65 @@
+---
+interface Props {
+  title: string;
+  description: string;
+  slug: string;
+  pubDate: Date;
+  category: string;
+  heroImage?: string;
+  tags?: string[];
+}
+
+const { title, description, slug, pubDate, category, heroImage, tags = [] } = Astro.props;
+
+const formattedDate = pubDate.toLocaleDateString('en-US', {
+  year: 'numeric',
+  month: 'long',
+  day: 'numeric',
+});
+
+const categoryColors: Record<string, string> = {
+  anime: 'badge-anime',
+  training: 'bg-blue-500/20 text-blue-400 border border-blue-500/30 badge',
+  nutrition: 'bg-green-500/20 text-green-400 border border-green-500/30 badge',
+  mindset: 'bg-purple-500/20 text-purple-400 border border-purple-500/30 badge',
+};
+---
+
+<article class="card group flex flex-col">
+  <a href={`/blog/${slug}`} class="block relative overflow-hidden aspect-[16/9] bg-dark-600">
+    {heroImage ? (
+      <img
+        src={heroImage}
+        alt={title}
+        class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+        loading="lazy"
+      />
+    ) : (
+      <div class="w-full h-full flex items-center justify-center bg-gradient-to-br from-dark-600 to-dark-700">
+        <svg class="w-12 h-12 text-brand-500/30" fill="currentColor" viewBox="0 0 24 24">
+          <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/>
+        </svg>
+      </div>
+    )}
+    <div class="absolute inset-0 bg-gradient-to-t from-dark-900/60 to-transparent" />
+  </a>
+
+  <div class="flex flex-col flex-1 p-5">
+    <div class="flex items-center gap-2 mb-3">
+      <span class={categoryColors[category] || 'badge-anime'}>{category}</span>
+      <time class="text-gray-500 text-xs">{formattedDate}</time>
+    </div>
+
+    <h3 class="text-white font-bold text-lg leading-snug mb-2 group-hover:text-brand-400 transition-colors">
+      <a href={`/blog/${slug}`}>{title}</a>
+    </h3>
+    <p class="text-gray-400 text-sm leading-relaxed flex-1 mb-4">{description}</p>
+
+    <a href={`/blog/${slug}`} class="text-brand-400 hover:text-brand-300 text-sm font-semibold flex items-center gap-1 transition-colors">
+      Read More
+      <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+      </svg>
+    </a>
+  </div>
+</article>

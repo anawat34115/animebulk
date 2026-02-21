@@ -1,0 +1,30 @@
+---
+import WorkoutLayout from '../../layouts/WorkoutLayout.astro';
+import { getCollection } from 'astro:content';
+
+export async function getStaticPaths() {
+  const workouts = await getCollection('workouts');
+  return workouts.map(workout => ({
+    params: { character: workout.slug },
+    props: { workout },
+  }));
+}
+
+const { workout } = Astro.props;
+const { Content } = await workout.render();
+---
+
+<WorkoutLayout
+  title={workout.data.title}
+  character={workout.data.character}
+  anime={workout.data.anime}
+  description={workout.data.description}
+  heroImage={workout.data.heroImage}
+  difficulty={workout.data.difficulty}
+  duration={workout.data.duration}
+  goal={workout.data.goal}
+  tags={workout.data.tags}
+  pubDate={workout.data.pubDate}
+>
+  <Content />
+</WorkoutLayout>

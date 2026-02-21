@@ -1,0 +1,106 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import WorkoutCard from '../../components/WorkoutCard.astro';
+import Breadcrumb from '../../components/Breadcrumb.astro';
+import { getCollection } from 'astro:content';
+
+const allWorkouts = await getCollection('workouts');
+const workouts = allWorkouts.sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
+
+const difficulties = ['all', 'beginner', 'intermediate', 'advanced'] as const;
+---
+
+<BaseLayout
+  title="Anime Workout Routines — Train Like Your Favorite Characters"
+  description="Browse all anime character workout routines. Science-backed programs for Goku, Tanjiro, Naruto, and more. Find your character and start training today."
+>
+  <div class="pt-16">
+    <Breadcrumb crumbs={[
+      { label: 'Home', href: '/' },
+      { label: 'Workouts' },
+    ]} />
+    <!-- Header -->
+    <div class="bg-dark-800 border-b border-white/5 py-16">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <p class="text-brand-400 text-sm font-bold uppercase tracking-widest mb-3">Character Programs</p>
+        <h1 class="text-4xl md:text-6xl font-display tracking-wide text-white mb-4">
+          Anime <span class="text-gradient">Workout Routines</span>
+        </h1>
+        <p class="text-gray-400 text-lg max-w-xl">
+          Every program is built around the character's actual fighting style and physique. Pick your character. Start your transformation.
+        </p>
+      </div>
+    </div>
+
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+      <!-- Difficulty Filter -->
+      <div class="flex flex-wrap gap-2 mb-10">
+        {difficulties.map(diff => (
+          <button
+            data-difficulty={diff}
+            class={`px-4 py-2 rounded-full text-sm font-semibold border transition-all duration-200 diff-btn ${
+              diff === 'all'
+                ? 'bg-brand-500 border-brand-500 text-white'
+                : 'bg-transparent border-white/10 text-gray-400 hover:border-brand-500/40 hover:text-white'
+            }`}
+          >
+            {diff.charAt(0).toUpperCase() + diff.slice(1)}
+          </button>
+        ))}
+      </div>
+
+      <!-- Workouts Grid -->
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        {workouts.map(workout => (
+          <div data-difficulty={workout.data.difficulty} class="workout-item">
+            <WorkoutCard
+              title={workout.data.title}
+              character={workout.data.character}
+              anime={workout.data.anime}
+              description={workout.data.description}
+              slug={workout.slug}
+              difficulty={workout.data.difficulty}
+              duration={workout.data.duration}
+              goal={workout.data.goal}
+              heroImage={workout.data.heroImage}
+            />
+          </div>
+        ))}
+      </div>
+
+      {workouts.length === 0 && (
+        <div class="text-center py-20 text-gray-500">
+          <p class="text-4xl mb-4">💪</p>
+          <p class="text-lg">Workouts coming soon. Check back!</p>
+        </div>
+      )}
+    </div>
+  </div>
+</BaseLayout>
+
+<script>
+  const buttons = document.querySelectorAll('.diff-btn');
+  const items = document.querySelectorAll('.workout-item');
+
+  buttons.forEach(btn => {
+    btn.addEventListener('click', () => {
+      const diff = btn.getAttribute('data-difficulty');
+
+      buttons.forEach(b => {
+        b.classList.remove('bg-brand-500', 'border-brand-500', 'text-white');
+        b.classList.add('bg-transparent', 'border-white/10', 'text-gray-400');
+      });
+      btn.classList.add('bg-brand-500', 'border-brand-500', 'text-white');
+      btn.classList.remove('bg-transparent', 'border-white/10', 'text-gray-400');
+
+      items.forEach(item => {
+        const itemDiff = item.getAttribute('data-difficulty');
+        if (diff === 'all' || itemDiff === diff) {
+          (item as HTMLElement).style.display = '';
+        } else {
+          (item as HTMLElement).style.display = 'none';
+        }
+      });
+    });
+  });
+</script>

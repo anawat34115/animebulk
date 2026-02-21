@@ -1,0 +1,162 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import BlogCard from '../../components/BlogCard.astro';
+import Breadcrumb from '../../components/Breadcrumb.astro';
+import { getCollection } from 'astro:content';
+
+const allPosts = await getCollection('blog');
+const posts = allPosts.sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
+
+const categories = ['all', 'anime', 'training', 'nutrition', 'mindset'] as const;
+---
+
+<BaseLayout
+  title="Blog — Anime Fitness Tips & Guides"
+  description="Anime-inspired fitness articles, training guides, nutrition tips, and mindset content to help you train like your favorite characters."
+>
+  <div class="pt-16">
+    <Breadcrumb crumbs={[
+      { label: 'Home', href: '/' },
+      { label: 'Blog' },
+    ]} />
+    <!-- Header -->
+    <div class="bg-dark-800 border-b border-white/5 py-16">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <p class="text-brand-400 text-sm font-bold uppercase tracking-widest mb-3">Knowledge Base</p>
+        <h1 class="text-4xl md:text-6xl font-display tracking-wide text-white mb-4">
+          The AnimeBulk <span class="text-gradient">Blog</span>
+        </h1>
+        <p class="text-gray-400 text-lg max-w-xl">
+          Training guides, nutrition science, mindset articles — all filtered through the lens of anime culture.
+        </p>
+      </div>
+    </div>
+
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+      <!-- Search -->
+      <div class="relative mb-6">
+        <svg class="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-500 pointer-events-none" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+        </svg>
+        <input
+          id="blog-search"
+          type="search"
+          placeholder="Search articles, characters, topics..."
+          class="w-full max-w-md bg-dark-700 border border-white/10 focus:border-brand-500 rounded-xl pl-10 pr-4 py-3 text-white placeholder-gray-500 outline-none transition-colors text-sm"
+        />
+        <span id="search-count" class="hidden absolute right-4 top-1/2 -translate-y-1/2 text-xs text-gray-500"></span>
+      </div>
+
+      <!-- Category Filter -->
+      <div class="flex flex-wrap gap-2 mb-10" id="category-filter">
+        {categories.map(cat => (
+          <button
+            data-category={cat}
+            class={`px-4 py-2 rounded-full text-sm font-semibold border transition-all duration-200 category-btn ${
+              cat === 'all'
+                ? 'bg-brand-500 border-brand-500 text-white'
+                : 'bg-transparent border-white/10 text-gray-400 hover:border-brand-500/40 hover:text-white'
+            }`}
+          >
+            {cat.charAt(0).toUpperCase() + cat.slice(1)}
+          </button>
+        ))}
+      </div>
+
+      <!-- Posts Grid -->
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6" id="posts-grid">
+        {posts.map(post => (
+          <div
+            data-category={post.data.category}
+            data-search-text={`${post.data.title} ${post.data.description} ${post.data.tags.join(' ')}`}
+            class="post-item"
+          >
+            <BlogCard
+              title={post.data.title}
+              description={post.data.description}
+              slug={post.slug}
+              pubDate={post.data.pubDate}
+              category={post.data.category}
+              heroImage={post.data.heroImage}
+              tags={post.data.tags}
+            />
+          </div>
+        ))}
+      </div>
+
+      {posts.length === 0 && (
+        <div class="text-center py-20 text-gray-500">
+          <p class="text-4xl mb-4">📝</p>
+          <p class="text-lg">No articles yet. Check back soon!</p>
+        </div>
+      )}
+
+      <!-- No results message -->
+      <div id="no-results" class="hidden text-center py-20">
+        <p class="text-4xl mb-4">🔍</p>
+        <p class="text-gray-400 text-lg mb-2">No articles found.</p>
+        <p class="text-gray-600 text-sm">Try a different search term or category.</p>
+      </div>
+    </div>
+  </div>
+</BaseLayout>
+
+<script>
+  const buttons = document.querySelectorAll<HTMLButtonElement>('.category-btn');
+  const items = document.querySelectorAll<HTMLElement>('.post-item');
+  const searchInput = document.getElementById('blog-search') as HTMLInputElement | null;
+  const noResults = document.getElementById('no-results');
+  const searchCount = document.getElementById('search-count');
+
+  let activeCategory = 'all';
+  let searchQuery = '';
+
+  function applyFilters() {
+    let visible = 0;
+
+    items.forEach(item => {
+      const cat = item.getAttribute('data-category') ?? '';
+      const text = (item.getAttribute('data-search-text') ?? '').toLowerCase();
+      const matchesCat = activeCategory === 'all' || cat === activeCategory;
+      const matchesSearch = searchQuery === '' || text.includes(searchQuery);
+
+      if (matchesCat && matchesSearch) {
+        item.style.display = '';
+        visible++;
+      } else {
+        item.style.display = 'none';
+      }
+    });
+
+    if (noResults) noResults.classList.toggle('hidden', visible > 0);
+
+    if (searchCount) {
+      if (searchQuery) {
+        searchCount.textContent = `${visible} result${visible !== 1 ? 's' : ''}`;
+        searchCount.classList.remove('hidden');
+      } else {
+        searchCount.classList.add('hidden');
+      }
+    }
+  }
+
+  buttons.forEach(btn => {
+    btn.addEventListener('click', () => {
+      activeCategory = btn.getAttribute('data-category') ?? 'all';
+
+      buttons.forEach(b => {
+        b.classList.remove('bg-brand-500', 'border-brand-500', 'text-white');
+        b.classList.add('bg-transparent', 'border-white/10', 'text-gray-400');
+      });
+      btn.classList.add('bg-brand-500', 'border-brand-500', 'text-white');
+      btn.classList.remove('bg-transparent', 'border-white/10', 'text-gray-400');
+
+      applyFilters();
+    });
+  });
+
+  searchInput?.addEventListener('input', () => {
+    searchQuery = searchInput.value.trim().toLowerCase();
+    applyFilters();
+  });
+</script>

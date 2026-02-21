@@ -1,0 +1,248 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import EmailCapture from '../components/EmailCapture.astro';
+import WorkoutCard from '../components/WorkoutCard.astro';
+import BlogCard from '../components/BlogCard.astro';
+import { getCollection } from 'astro:content';
+
+const allWorkouts = await getCollection('workouts');
+const featuredWorkouts = allWorkouts.filter(w => w.data.featured).slice(0, 3);
+
+const allPosts = await getCollection('blog');
+const featuredPosts = allPosts
+  .sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf())
+  .filter(p => p.data.featured)
+  .slice(0, 3);
+
+const stats = [
+  { value: '50+', label: 'Character Workouts' },
+  { value: '10K+', label: 'Anime Athletes' },
+  { value: '100%', label: 'Science-Backed' },
+  { value: 'Free', label: 'To Get Started' },
+];
+
+const features = [
+  {
+    icon: '⚡',
+    title: 'Character-Specific Programs',
+    desc: 'Every workout is designed around the actual fighting style, physique, and training philosophy of the character.',
+  },
+  {
+    icon: '🧬',
+    title: 'Science-Backed Methods',
+    desc: 'Progressive overload, periodization, and evidence-based nutrition — wrapped in anime aesthetics.',
+  },
+  {
+    icon: '📈',
+    title: 'Beginner to Advanced',
+    desc: 'Whether you\'re just starting or already training hard, we have a program calibrated to your level.',
+  },
+  {
+    icon: '🎯',
+    title: 'Goal-Oriented Training',
+    desc: 'Strength, hypertrophy, calisthenics, agility — pick your goal and we\'ll match you with the right character.',
+  },
+];
+---
+
+<BaseLayout
+  title="AnimeBulk"
+  description="Train like your favorite anime characters. Science-backed workout routines inspired by Goku, Tanjiro, Naruto, and more. Free programs for anime fans who want real results."
+>
+  <!-- HERO -->
+  <section class="relative min-h-screen flex items-center justify-center overflow-hidden pt-16">
+    <!-- Animated background -->
+    <div class="absolute inset-0 bg-dark-900">
+      <div class="absolute inset-0 bg-gradient-radial from-brand-900/20 via-dark-900 to-dark-900" />
+      <!-- Grid pattern -->
+      <div class="absolute inset-0 opacity-5" style="background-image: linear-gradient(rgba(249,115,22,0.3) 1px, transparent 1px), linear-gradient(90deg, rgba(249,115,22,0.3) 1px, transparent 1px); background-size: 60px 60px;" />
+    </div>
+
+    <!-- Floating orbs -->
+    <div class="absolute top-1/4 left-1/4 w-96 h-96 bg-brand-500/5 rounded-full blur-3xl animate-pulse" />
+    <div class="absolute bottom-1/4 right-1/4 w-64 h-64 bg-orange-600/5 rounded-full blur-3xl animate-pulse" style="animation-delay: 1s;" />
+
+    <div class="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center py-20">
+      <!-- Badge -->
+      <div class="inline-flex items-center gap-2 bg-brand-500/10 border border-brand-500/20 rounded-full px-5 py-2 mb-8">
+        <span class="w-2 h-2 bg-brand-500 rounded-full animate-pulse" />
+        <span class="text-brand-400 text-sm font-semibold tracking-wide">The #1 Anime Fitness Platform</span>
+      </div>
+
+      <!-- Headline -->
+      <h1 class="text-5xl sm:text-7xl md:text-8xl font-display tracking-wider text-white mb-6 leading-none">
+        TRAIN LIKE<br />
+        <span class="text-gradient">YOUR FAVORITE</span><br />
+        ANIME CHARACTER
+      </h1>
+
+      <p class="text-xl md:text-2xl text-gray-400 max-w-2xl mx-auto mb-10 leading-relaxed">
+        Science-backed workout programs inspired by the world's most iconic anime fighters, heroes, and legends. Real training. Real results.
+      </p>
+
+      <!-- CTAs -->
+      <div class="flex flex-col sm:flex-row gap-4 justify-center mb-16">
+        <a href="/workouts" class="btn-primary text-lg px-8 py-4">
+          Browse All Workouts
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7l5 5m0 0l-5 5m5-5H6" />
+          </svg>
+        </a>
+        <a href="/#email-capture" class="btn-secondary text-lg px-8 py-4">
+          Get Free Programs
+        </a>
+      </div>
+
+      <!-- Stats -->
+      <div class="grid grid-cols-2 md:grid-cols-4 gap-6 max-w-3xl mx-auto">
+        {stats.map(stat => (
+          <div class="text-center">
+            <div class="text-3xl md:text-4xl font-display text-brand-400 mb-1">{stat.value}</div>
+            <div class="text-gray-500 text-sm">{stat.label}</div>
+          </div>
+        ))}
+      </div>
+    </div>
+
+    <!-- Scroll indicator -->
+    <div class="absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 text-gray-600">
+      <span class="text-xs tracking-widest uppercase">Scroll</span>
+      <div class="w-px h-8 bg-gradient-to-b from-gray-600 to-transparent animate-bounce" />
+    </div>
+  </section>
+
+  <!-- FEATURED WORKOUTS -->
+  {featuredWorkouts.length > 0 && (
+    <section class="py-20 bg-dark-800/50">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="flex items-end justify-between mb-12">
+          <div>
+            <p class="text-brand-400 text-sm font-bold uppercase tracking-widest mb-2">Start Training</p>
+            <h2 class="section-title">Featured <span class="text-gradient">Workouts</span></h2>
+          </div>
+          <a href="/workouts" class="hidden sm:flex items-center gap-2 text-gray-400 hover:text-brand-400 transition-colors font-semibold text-sm">
+            View All
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+            </svg>
+          </a>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          {featuredWorkouts.map(workout => (
+            <WorkoutCard
+              title={workout.data.title}
+              character={workout.data.character}
+              anime={workout.data.anime}
+              description={workout.data.description}
+              slug={workout.slug}
+              difficulty={workout.data.difficulty}
+              duration={workout.data.duration}
+              goal={workout.data.goal}
+              heroImage={workout.data.heroImage}
+            />
+          ))}
+        </div>
+
+        <div class="text-center mt-10 sm:hidden">
+          <a href="/workouts" class="btn-secondary">View All Workouts</a>
+        </div>
+      </div>
+    </section>
+  )}
+
+  <!-- WHY ANIMEBULK -->
+  <section class="py-20">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="text-center mb-16">
+        <p class="text-brand-400 text-sm font-bold uppercase tracking-widest mb-2">Why AnimeBulk</p>
+        <h2 class="section-title mb-4">Fitness Meets <span class="text-gradient">Fandom</span></h2>
+        <p class="text-gray-400 max-w-xl mx-auto">
+          We bridge the gap between anime passion and real-world fitness. Every program is built on sports science, wrapped in the culture you love.
+        </p>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+        {features.map(f => (
+          <div class="bg-dark-700 border border-white/5 rounded-xl p-6 hover:border-brand-500/30 transition-all duration-300 hover:-translate-y-1">
+            <div class="text-4xl mb-4">{f.icon}</div>
+            <h3 class="text-white font-bold text-lg mb-2">{f.title}</h3>
+            <p class="text-gray-400 text-sm leading-relaxed">{f.desc}</p>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- POPULAR CHARACTERS QUICK LINKS -->
+  <section class="py-16 bg-dark-800/30">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <h2 class="section-title text-center mb-10">Popular <span class="text-gradient">Characters</span></h2>
+      <div class="flex flex-wrap justify-center gap-3">
+        {[
+          { name: 'Goku', anime: 'Dragon Ball Z', slug: 'goku' },
+          { name: 'Tanjiro', anime: 'Demon Slayer', slug: 'tanjiro' },
+          { name: 'Naruto', anime: 'Naruto', slug: 'naruto' },
+          { name: 'Levi Ackerman', anime: 'Attack on Titan', slug: 'levi' },
+          { name: 'Roronoa Zoro', anime: 'One Piece', slug: 'zoro' },
+          { name: 'Yuji Itadori', anime: 'Jujutsu Kaisen', slug: 'itadori' },
+        ].map(char => (
+          <a
+            href={`/workouts/${char.slug}`}
+            class="group flex flex-col items-center gap-1 bg-dark-700 border border-white/5 hover:border-brand-500/40 rounded-xl px-6 py-4 transition-all duration-200 hover:-translate-y-0.5"
+          >
+            <span class="text-white font-bold group-hover:text-brand-400 transition-colors">{char.name}</span>
+            <span class="text-gray-500 text-xs">{char.anime}</span>
+          </a>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- FEATURED BLOG POSTS -->
+  {featuredPosts.length > 0 && (
+    <section class="py-20">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="flex items-end justify-between mb-12">
+          <div>
+            <p class="text-brand-400 text-sm font-bold uppercase tracking-widest mb-2">Knowledge Base</p>
+            <h2 class="section-title">Latest <span class="text-gradient">Articles</span></h2>
+          </div>
+          <a href="/blog" class="hidden sm:flex items-center gap-2 text-gray-400 hover:text-brand-400 transition-colors font-semibold text-sm">
+            View All
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+            </svg>
+          </a>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          {featuredPosts.map(post => (
+            <BlogCard
+              title={post.data.title}
+              description={post.data.description}
+              slug={post.slug}
+              pubDate={post.data.pubDate}
+              category={post.data.category}
+              heroImage={post.data.heroImage}
+              tags={post.data.tags}
+            />
+          ))}
+        </div>
+      </div>
+    </section>
+  )}
+
+  <!-- EMAIL CAPTURE -->
+  <EmailCapture />
+
+  <!-- SOCIAL PROOF BANNER -->
+  <section class="py-12 bg-gradient-to-r from-brand-900/20 via-dark-800 to-brand-900/20 border-y border-brand-500/10">
+    <div class="max-w-4xl mx-auto px-4 text-center">
+      <p class="text-2xl md:text-3xl font-display tracking-wide text-white mb-2">
+        "Finally, a fitness site that speaks my language."
+      </p>
+      <p class="text-gray-500 text-sm">— AnimeBulk Community Member</p>
+    </div>
+  </section>
+</BaseLayout>

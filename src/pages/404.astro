@@ -1,0 +1,47 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+---
+
+<BaseLayout
+  title="404 — Page Not Found"
+  description="This page doesn't exist. But your training journey does. Head back to AnimeBulk."
+>
+  <div class="pt-16 min-h-screen flex items-center justify-center">
+    <div class="max-w-2xl mx-auto px-4 text-center py-20">
+      <div class="text-8xl font-display text-brand-500/20 mb-4 leading-none">404</div>
+      <h1 class="text-4xl md:text-5xl font-display tracking-wide text-white mb-4">
+        You Got <span class="text-gradient">Lost</span>
+      </h1>
+      <p class="text-gray-400 text-lg mb-3">
+        Even Naruto got lost sometimes. This page doesn't exist.
+      </p>
+      <p class="text-gray-500 text-sm mb-10">
+        But your training does. Head back and find your program.
+      </p>
+      <div class="flex flex-col sm:flex-row gap-4 justify-center">
+        <a href="/" class="btn-primary">
+          Back to Home
+        </a>
+        <a href="/workouts" class="btn-secondary">
+          Browse Workouts
+        </a>
+      </div>
+
+      <!-- Quick links -->
+      <div class="mt-16 grid grid-cols-3 gap-4 max-w-sm mx-auto">
+        {[
+          { href: '/workouts/goku', label: 'Goku' },
+          { href: '/workouts/tanjiro', label: 'Tanjiro' },
+          { href: '/workouts/naruto', label: 'Naruto' },
+        ].map(link => (
+          <a
+            href={link.href}
+            class="bg-dark-700 border border-white/5 hover:border-brand-500/40 rounded-lg py-3 text-sm font-semibold text-gray-400 hover:text-brand-400 transition-all"
+          >
+            {link.label}
+          </a>
+        ))}
+      </div>
+    </div>
+  </div>
+</BaseLayout>

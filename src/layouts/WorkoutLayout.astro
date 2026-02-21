@@ -1,0 +1,168 @@
+---
+import BaseLayout from './BaseLayout.astro';
+import EmailCapture from '../components/EmailCapture.astro';
+import Breadcrumb from '../components/Breadcrumb.astro';
+import { getCollection } from 'astro:content';
+
+interface Props {
+  title: string;
+  character: string;
+  anime: string;
+  description: string;
+  heroImage?: string;
+  difficulty: 'beginner' | 'intermediate' | 'advanced';
+  duration: string;
+  goal: string;
+  tags: string[];
+  pubDate: Date;
+}
+
+const { title, character, anime, description, heroImage, difficulty, duration, goal, tags, pubDate } = Astro.props;
+
+const allPosts = await getCollection('blog');
+const relatedPosts = allPosts
+  .filter(p => tags.some(t => p.data.tags?.includes(t)))
+  .sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf())
+  .slice(0, 3);
+
+const difficultyColors = {
+  beginner: 'badge-difficulty-beginner',
+  intermediate: 'badge-difficulty-intermediate',
+  advanced: 'badge-difficulty-advanced',
+};
+
+const schema = {
+  "@context": "https://schema.org",
+  "@type": "Article",
+  "headline": title,
+  "description": description,
+  "datePublished": pubDate.toISOString(),
+  "image": heroImage ? `https://animebulk.com${heroImage}` : undefined,
+  "author": {
+    "@type": "Organization",
+    "name": "AnimeBulk",
+    "url": "https://animebulk.com"
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "AnimeBulk",
+    "url": "https://animebulk.com"
+  },
+  "about": {
+    "@type": "Thing",
+    "name": `${character} Workout Routine`
+  }
+};
+---
+
+<BaseLayout title={title} description={description} image={heroImage} type="article" schema={schema}>
+  <div class="pt-16">
+    <Breadcrumb crumbs={[
+      { label: 'Home', href: '/' },
+      { label: 'Workouts', href: '/workouts' },
+      { label: character },
+    ]} />
+    <!-- Hero Banner -->
+    <div class="relative min-h-[400px] flex items-end overflow-hidden bg-dark-800">
+      {heroImage && (
+        <img src={heroImage} alt={character} class="absolute inset-0 w-full h-full object-cover opacity-30" />
+      )}
+      <div class="absolute inset-0 bg-gradient-to-t from-dark-900 via-dark-900/70 to-dark-900/30" />
+      <div class="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 w-full">
+        <div class="flex flex-wrap gap-2 mb-4">
+          <span class="badge-anime">{anime}</span>
+          <span class={difficultyColors[difficulty]}>{difficulty}</span>
+        </div>
+        <h1 class="text-4xl md:text-6xl font-display tracking-wide text-white mb-4 leading-tight">
+          {title}
+        </h1>
+        <p class="text-xl text-gray-300 max-w-2xl mb-6">{description}</p>
+
+        <!-- Stats Bar -->
+        <div class="flex flex-wrap gap-6 text-sm">
+          <div class="flex items-center gap-2 text-gray-300">
+            <svg class="w-4 h-4 text-brand-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+            </svg>
+            <span><strong class="text-white">{duration}</strong></span>
+          </div>
+          <div class="flex items-center gap-2 text-gray-300">
+            <svg class="w-4 h-4 text-brand-500" fill="currentColor" viewBox="0 0 24 24">
+              <path d="M13 10V3L4 14h7v7l9-11h-7z" />
+            </svg>
+            <span>Goal: <strong class="text-white">{goal}</strong></span>
+          </div>
+          <div class="flex items-center gap-2 text-gray-300">
+            <svg class="w-4 h-4 text-brand-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+            </svg>
+            <span>Character: <strong class="text-white">{character}</strong></span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Content -->
+    <div class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+      <!-- Tags -->
+      {tags.length > 0 && (
+        <div class="flex flex-wrap gap-2 mb-10">
+          {tags.map(tag => (
+            <span class="text-xs bg-white/5 border border-white/10 text-gray-400 px-3 py-1 rounded-full">
+              #{tag}
+            </span>
+          ))}
+        </div>
+      )}
+
+      <div class="prose-dark">
+        <slot />
+      </div>
+
+      <!-- Email Capture -->
+      <div class="my-12 p-6 bg-dark-700 border border-brand-500/20 rounded-2xl">
+        <EmailCapture
+          title={`Want the Full ${character} Training System?`}
+          subtitle="Get the complete PDF program + nutrition guide free when you join our newsletter."
+          compact={true}
+          formId={`email-workout-${character.toLowerCase().replace(/\s+/g, '-')}`}
+        />
+      </div>
+
+      <!-- Related Blog Posts -->
+      {relatedPosts.length > 0 && (
+        <div class="mt-12 pt-10 border-t border-white/5">
+          <h2 class="text-2xl font-display tracking-wide text-white mb-6">
+            Related <span class="text-gradient">Articles</span>
+          </h2>
+          <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+            {relatedPosts.map(p => (
+              <a
+                href={`/blog/${p.slug}`}
+                class="group bg-dark-700 border border-white/5 hover:border-brand-500/40 rounded-xl p-5 transition-all duration-200 hover:-translate-y-0.5"
+              >
+                <span class="text-xs font-bold uppercase tracking-wider px-2 py-0.5 rounded-full bg-brand-500/10 text-brand-400 border border-brand-500/20 mb-3 inline-block">
+                  {p.data.category}
+                </span>
+                <h3 class="text-white font-bold text-sm group-hover:text-brand-400 transition-colors leading-snug mb-1">
+                  {p.data.title}
+                </h3>
+                <p class="text-gray-500 text-xs line-clamp-2">{p.data.description}</p>
+              </a>
+            ))}
+          </div>
+        </div>
+      )}
+
+      <!-- Back link -->
+      <div class="mt-10">
+        <a href="/workouts" class="inline-flex items-center gap-2 text-gray-400 hover:text-brand-400 transition-colors text-sm font-semibold">
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
+          </svg>
+          Back to All Workouts
+        </a>
+      </div>
+    </div>
+  </div>
+</BaseLayout>
