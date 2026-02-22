@@ -1,0 +1,59 @@
+---
+interface Props {
+  character?: string;
+  programTitle?: string;
+  programSlug?: string;
+  price?: string;
+  originalPrice?: string;
+}
+const {
+  character = 'this character',
+  programTitle = 'the Full Program',
+  programSlug = 'saiyan-hypertrophy',
+  price = '$27',
+  originalPrice = '$47',
+} = Astro.props;
+---
+
+<div class="my-12 relative overflow-hidden rounded-2xl border border-brand-500/30 bg-gradient-to-br from-brand-900/30 via-dark-800 to-dark-900">
+  <!-- Glow -->
+  <div class="absolute -top-10 -right-10 w-40 h-40 bg-brand-500/10 rounded-full blur-2xl pointer-events-none" />
+
+  <div class="relative p-6 sm:p-8 flex flex-col sm:flex-row items-start sm:items-center gap-6">
+    <div class="flex-1">
+      <div class="inline-flex items-center gap-2 bg-brand-500/10 border border-brand-500/20 rounded-full px-3 py-1 mb-3">
+        <span class="w-1.5 h-1.5 bg-brand-500 rounded-full animate-pulse" />
+        <span class="text-brand-400 text-xs font-bold uppercase tracking-wider">Premium Program</span>
+      </div>
+      <h3 class="text-white font-display tracking-wide text-xl md:text-2xl mb-2">
+        Want the Complete {character} System?
+      </h3>
+      <p class="text-gray-400 text-sm leading-relaxed mb-3">
+        This free guide covers the basics. The full <strong class="text-white">{programTitle}</strong> includes periodized weekly plans, full nutrition guide, supplement stack, and printable workout sheets.
+      </p>
+      <ul class="flex flex-wrap gap-x-4 gap-y-1 text-xs text-gray-400">
+        {['Periodized 8–12 week plan', 'Nutrition & meal plan', 'Supplement guide', 'Printable PDF'].map(f => (
+          <li class="flex items-center gap-1">
+            <svg class="w-3 h-3 text-brand-500 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7" />
+            </svg>
+            {f}
+          </li>
+        ))}
+      </ul>
+    </div>
+    <div class="flex flex-col items-center gap-3 flex-shrink-0 text-center">
+      <div class="flex items-baseline gap-2">
+        <span class="text-3xl font-display text-white">{price}</span>
+        <span class="text-gray-500 line-through text-sm">{originalPrice}</span>
+      </div>
+      <a
+        href="/programs"
+        class="bg-brand-500 hover:bg-brand-600 text-white font-bold px-6 py-3 rounded-xl transition-all duration-200 hover:scale-105 active:scale-95 text-sm whitespace-nowrap w-full text-center"
+      >
+        Get Instant Access →
+      </a>
+      <span class="text-gray-600 text-xs">One-time payment · Instant PDF download</span>
+    </div>
+  </div>
+</div>

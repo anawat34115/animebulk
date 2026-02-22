@@ -1,0 +1,40 @@
+---
+interface Props {
+  message?: string;
+  link?: string;
+  linkText?: string;
+}
+const {
+  message = '🔥 Limited Time: Get the Saiyan Hypertrophy Program for $27 (was $47)',
+  link = '/programs',
+  linkText = 'Grab It Now →',
+} = Astro.props;
+---
+
+<div id="announcement-bar" class="relative bg-gradient-to-r from-brand-600 via-brand-500 to-orange-500 text-white text-sm font-semibold py-2.5 px-4 text-center z-50">
+  <span>{message}</span>
+  {link && (
+    <a href={link} class="ml-3 underline underline-offset-2 hover:no-underline font-bold whitespace-nowrap">
+      {linkText}
+    </a>
+  )}
+  <button
+    id="close-announcement"
+    class="absolute right-3 top-1/2 -translate-y-1/2 text-white/70 hover:text-white transition-colors p-1"
+    aria-label="Close"
+  >
+    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+    </svg>
+  </button>
+</div>
+
+<script>
+  const bar = document.getElementById('announcement-bar');
+  const btn = document.getElementById('close-announcement');
+  if (sessionStorage.getItem('announcement-closed')) bar?.remove();
+  btn?.addEventListener('click', () => {
+    bar?.remove();
+    sessionStorage.setItem('announcement-closed', '1');
+  });
+</script>

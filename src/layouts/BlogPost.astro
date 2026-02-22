@@ -2,6 +2,8 @@
 import BaseLayout from './BaseLayout.astro';
 import EmailCapture from '../components/EmailCapture.astro';
 import Breadcrumb from '../components/Breadcrumb.astro';
+import UpgradeCTA from '../components/UpgradeCTA.astro';
+import AffiliateBanner from '../components/AffiliateBanner.astro';
 import { getCollection } from 'astro:content';
 
 interface Props {
@@ -97,6 +99,12 @@ const schema = {
       <div class="prose-dark">
         <slot />
       </div>
+
+      <!-- Affiliate Banner -->
+      <AffiliateBanner variant="supplements" />
+
+      <!-- Upgrade CTA -->
+      <UpgradeCTA />
 
       <!-- Email Capture mid-article -->
       <div class="my-12 p-6 bg-dark-700 border border-brand-500/20 rounded-2xl">

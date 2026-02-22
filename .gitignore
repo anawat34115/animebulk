@@ -1,12 +1,8 @@
-# Build output
-dist/
-.output/
-.vercel/
-
 # Dependencies
 node_modules/
 
-# Astro
+# Build output
+dist/
 .astro/
 
 # Environment variables
@@ -14,14 +10,17 @@ node_modules/
 .env.local
 .env.production
 
-# OS
+# OS files
 .DS_Store
 Thumbs.db
 
 # Editor
 .vscode/
 .idea/
-*.suo
-*.ntvs*
-*.njsproj
-*.sln
+
+# Logs
+*.log
+npm-debug.log*
+
+.vercel
+.env*.local

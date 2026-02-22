@@ -2,6 +2,8 @@
 import BaseLayout from './BaseLayout.astro';
 import EmailCapture from '../components/EmailCapture.astro';
 import Breadcrumb from '../components/Breadcrumb.astro';
+import UpgradeCTA from '../components/UpgradeCTA.astro';
+import AffiliateBanner from '../components/AffiliateBanner.astro';
 import { getCollection } from 'astro:content';
 
 interface Props {
@@ -119,6 +121,17 @@ const schema = {
         <slot />
       </div>
 
+      <!-- Affiliate Banner -->
+      <AffiliateBanner variant="supplements" />
+
+      <!-- Upgrade CTA -->
+      <UpgradeCTA
+        character={character}
+        programTitle={`the Full ${character} Program`}
+        price="$27"
+        originalPrice="$47"
+      />
+
       <!-- Email Capture -->
       <div class="my-12 p-6 bg-dark-700 border border-brand-500/20 rounded-2xl">
         <EmailCapture
@@ -141,9 +154,11 @@ const schema = {
                 href={`/blog/${p.slug}`}
                 class="group bg-dark-700 border border-white/5 hover:border-brand-500/40 rounded-xl p-5 transition-all duration-200 hover:-translate-y-0.5"
               >
-                <span class="text-xs font-bold uppercase tracking-wider px-2 py-0.5 rounded-full bg-brand-500/10 text-brand-400 border border-brand-500/20 mb-3 inline-block">
-                  {p.data.category}
-                </span>
+                <div class="flex items-center gap-2 mb-2">
+                  <span class="text-xs font-bold uppercase tracking-wider px-2 py-0.5 rounded-full bg-brand-500/10 text-brand-400 border border-brand-500/20">
+                    {p.data.category}
+                  </span>
+                </div>
                 <h3 class="text-white font-bold text-sm group-hover:text-brand-400 transition-colors leading-snug mb-1">
                   {p.data.title}
                 </h3>

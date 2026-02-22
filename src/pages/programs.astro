@@ -1,27 +1,30 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
 import EmailCapture from '../components/EmailCapture.astro';
+import AnnouncementBar from '../components/AnnouncementBar.astro';
 
 const programs = [
   {
     id: 'saiyan-hypertrophy',
-    title: 'The 12-Week Saiyan Hypertrophy Program',
+    title: '12-Week Saiyan Hypertrophy Program',
     character: 'Goku / Vegeta',
     anime: 'Dragon Ball Z',
     description: 'Build Saiyan-level muscle mass with this progressive overload hypertrophy program. 4 days/week, full periodization, nutrition guide included.',
     price: '$27',
     originalPrice: '$47',
+    savings: 'Save $20',
     features: [
-      '12-week progressive program',
-      'Full exercise video library',
+      '12-week progressive program (4 phases)',
+      'Full exercise library with cues',
       'Saiyan nutrition & meal plan',
       'Supplement guide',
       'Printable workout sheets',
       'Lifetime updates',
     ],
     badge: 'Best Seller',
-    badgeColor: 'bg-brand-500',
+    highlight: true,
     emoji: '⚡',
+    freePreview: '/workouts/goku',
   },
   {
     id: 'demon-slayer-agility',
@@ -31,128 +34,218 @@ const programs = [
     description: 'Train like a Demon Slayer with this calisthenics + agility program. Build explosive speed, endurance, and functional strength.',
     price: '$22',
     originalPrice: '$37',
+    savings: 'Save $15',
     features: [
       '8-week calisthenics program',
       'Breathing technique guide',
-      'Agility ladder drills',
+      'Agility & footwork drills',
       'Bodyweight progressions',
       'Recovery & mobility plan',
       'PDF + printable format',
     ],
     badge: 'Popular',
-    badgeColor: 'bg-blue-500',
+    highlight: false,
     emoji: '🌊',
+    freePreview: '/workouts/tanjiro',
   },
   {
     id: 'ninja-endurance',
-    title: 'Ninja Endurance: The Naruto Running Program',
+    title: 'Ninja Endurance: The Naruto Program',
     character: 'Naruto Uzumaki',
     anime: 'Naruto',
     description: 'Build legendary stamina and never-give-up conditioning with this 6-week endurance and functional fitness program.',
     price: '$19',
     originalPrice: '$29',
+    savings: 'Save $10',
     features: [
       '6-week endurance program',
       'Running & cardio protocols',
       'Functional strength circuits',
-      'Ramen-approved nutrition guide',
+      'Nutrition guide',
       'Mental toughness framework',
       'PDF download',
     ],
-    badge: 'New',
-    badgeColor: 'bg-green-500',
+    badge: 'Beginner Friendly',
+    highlight: false,
     emoji: '🍥',
+    freePreview: '/workouts/naruto',
   },
+];
+
+const faqs = [
+  { q: 'Do I need a gym?', a: 'The Naruto and Tanjiro programs are fully bodyweight-compatible. The Goku program uses barbells and dumbbells but includes gym-free alternatives for every exercise.' },
+  { q: 'What format are the programs?', a: 'All programs are delivered as instant-download PDFs. They\'re printable and mobile-friendly.' },
+  { q: 'Is there a money-back guarantee?', a: 'Yes — 30 days, no questions asked. If you\'re not satisfied, email us and we\'ll refund you in full.' },
+  { q: 'Can beginners use these programs?', a: 'The Naruto program is designed for beginners. Tanjiro is intermediate. Goku is advanced. Each program includes a difficulty guide and scaling options.' },
+  { q: 'How do I receive my program after purchase?', a: 'You\'ll receive an email with your download link immediately after checkout. You can also access it from your account page.' },
 ];
 ---
 
 <BaseLayout
-  title="Anime Fitness Programs — Premium Workout PDFs"
-  description="Premium anime-inspired workout programs. Download the Saiyan Hypertrophy Program, Demon Slayer Agility Routine, and more. Science-backed, character-inspired training."
+  title="Premium Anime Fitness Programs — PDF Workout Plans"
+  description="Premium anime-inspired workout PDF programs. The Saiyan Hypertrophy Program, Demon Slayer Agility Routine, Ninja Endurance. Science-backed, character-inspired training."
 >
+  <AnnouncementBar
+    message="🔥 Bundle Deal: Get all 3 programs for $67 (normally $141)"
+    link="#bundle"
+    linkText="See Bundle →"
+  />
+
   <div class="pt-16">
-    <!-- Header -->
-    <div class="bg-dark-800 border-b border-white/5 py-16">
-      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+    <!-- Hero Header -->
+    <div class="relative bg-dark-800 border-b border-white/5 py-20 overflow-hidden">
+      <div class="absolute inset-0 opacity-5" style="background-image: linear-gradient(rgba(249,115,22,0.4) 1px, transparent 1px), linear-gradient(90deg, rgba(249,115,22,0.4) 1px, transparent 1px); background-size: 40px 40px;" />
+      <div class="relative max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
         <p class="text-brand-400 text-sm font-bold uppercase tracking-widest mb-3">Premium Programs</p>
-        <h1 class="text-4xl md:text-6xl font-display tracking-wide text-white mb-4">
-          Level Up Your <span class="text-gradient">Training</span>
+        <h1 class="text-4xl md:text-6xl font-display tracking-wide text-white mb-5 leading-tight">
+          The Full System.<br />
+          <span class="text-gradient">Not Just a Workout.</span>
         </h1>
-        <p class="text-gray-400 text-lg max-w-xl mx-auto">
-          Full PDF programs with periodization, nutrition guides, and everything you need to train like an anime character — for real.
+        <p class="text-gray-400 text-lg max-w-xl mx-auto mb-8">
+          Periodized training plans, nutrition guides, supplement stacks, and printable PDFs — everything you need to actually train like an anime character.
         </p>
+        <!-- Urgency -->
+        <div class="inline-flex items-center gap-2 bg-red-500/10 border border-red-500/20 rounded-full px-5 py-2">
+          <span class="w-2 h-2 bg-red-500 rounded-full animate-pulse" />
+          <span class="text-red-400 text-sm font-semibold">Launch pricing ends soon — prices increase after 500 sales</span>
+        </div>
       </div>
     </div>
 
     <!-- Programs Grid -->
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
-      <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
-        {programs.map((program, i) => (
-          <div class={`relative bg-dark-700 border rounded-2xl overflow-hidden flex flex-col transition-all duration-300 hover:-translate-y-1 ${i === 0 ? 'border-brand-500/50 glow-brand' : 'border-white/10 hover:border-brand-500/30'}`}>
-            {/* Badge */}
-            <div class="absolute top-4 right-4">
-              <span class={`${program.badgeColor} text-white text-xs font-bold px-3 py-1 rounded-full`}>
-                {program.badge}
-              </span>
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
+      <div class="grid grid-cols-1 lg:grid-cols-3 gap-8 items-start">
+        {programs.map((program) => (
+          <div class={`relative rounded-2xl border flex flex-col overflow-hidden transition-all duration-300 hover:-translate-y-1 ${
+            program.highlight
+              ? 'border-brand-500/60 bg-gradient-to-b from-brand-900/30 to-dark-800 shadow-2xl shadow-brand-500/15 lg:scale-105'
+              : 'border-white/8 bg-dark-700 hover:border-brand-500/30'
+          }`}>
+            {/* Badge bar */}
+            <div class={`py-2 text-center text-xs font-bold uppercase tracking-widest ${
+              program.highlight ? 'bg-brand-500 text-white' : 'bg-white/5 text-gray-400'
+            }`}>
+              {program.badge}
             </div>
 
-            <div class="p-8 flex flex-col flex-1">
-              {/* Emoji & Anime */}
+            <div class="p-7 flex flex-col flex-1">
               <div class="flex items-center gap-3 mb-4">
-                <span class="text-4xl">{program.emoji}</span>
-                <span class="badge-anime">{program.anime}</span>
+                <span class="text-3xl">{program.emoji}</span>
+                <span class="text-xs font-bold uppercase tracking-wider px-2 py-1 rounded-full bg-brand-500/10 text-brand-400 border border-brand-500/20">{program.anime}</span>
               </div>
 
-              <h2 class="text-xl font-bold text-white mb-2 leading-snug">{program.title}</h2>
-              <p class="text-gray-400 text-sm mb-1">Character: <span class="text-gray-300 font-semibold">{program.character}</span></p>
-              <p class="text-gray-400 text-sm leading-relaxed mb-6">{program.description}</p>
+              <h2 class="text-lg font-bold text-white mb-1 leading-snug">{program.title}</h2>
+              <p class="text-gray-500 text-xs mb-3">Character: <span class="text-gray-300 font-semibold">{program.character}</span></p>
+              <p class="text-gray-400 text-sm leading-relaxed mb-5">{program.description}</p>
 
-              {/* Features */}
-              <ul class="space-y-2 mb-8 flex-1">
+              <ul class="space-y-2 mb-6 flex-1">
                 {program.features.map(feature => (
-                  <li class="flex items-center gap-2 text-sm text-gray-300">
-                    <svg class="w-4 h-4 text-brand-500 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+                  <li class="flex items-start gap-2 text-sm text-gray-300">
+                    <svg class="w-4 h-4 text-brand-500 flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7" />
                     </svg>
                     {feature}
                   </li>
                 ))}
               </ul>
 
-              {/* Price */}
-              <div class="flex items-baseline gap-3 mb-4">
-                <span class="text-3xl font-display text-white">{program.price}</span>
-                <span class="text-gray-500 line-through text-sm">{program.originalPrice}</span>
-                <span class="text-green-400 text-xs font-bold">One-time</span>
-              </div>
+              <div class="border-t border-white/5 pt-5 mt-auto">
+                <div class="flex items-baseline gap-2 mb-1">
+                  <span class="text-3xl font-display text-white">{program.price}</span>
+                  <span class="text-gray-500 line-through text-sm">{program.originalPrice}</span>
+                  <span class="text-green-400 text-xs font-bold bg-green-400/10 px-2 py-0.5 rounded-full">{program.savings}</span>
+                </div>
+                <p class="text-gray-600 text-xs mb-4">One-time payment · Instant PDF download</p>
 
-              <button
-                class={`w-full py-3 rounded-lg font-bold text-sm transition-all duration-200 hover:scale-105 active:scale-95 ${
-                  i === 0
-                    ? 'bg-brand-500 hover:bg-brand-600 text-white'
-                    : 'bg-white/10 hover:bg-brand-500 text-white border border-white/10 hover:border-brand-500'
-                }`}
-                onclick={`alert('Payment integration coming soon! Join the newsletter to get notified when ${program.title} launches.')`}
-              >
-                Get Instant Access →
-              </button>
+                <button
+                  class={`w-full py-3.5 rounded-xl font-bold text-sm transition-all duration-200 hover:scale-105 active:scale-95 mb-3 ${
+                    program.highlight
+                      ? 'bg-brand-500 hover:bg-brand-600 text-white shadow-lg shadow-brand-500/25'
+                      : 'bg-white/10 hover:bg-brand-500 text-white border border-white/10 hover:border-brand-500'
+                  }`}
+                  onclick={`alert('Stripe integration coming soon! Join the newsletter to get notified + get 20% off at launch.')`}
+                >
+                  Get Instant Access →
+                </button>
+                <a href={program.freePreview} class="block text-center text-gray-500 hover:text-brand-400 text-xs transition-colors">
+                  Preview the free version first →
+                </a>
+              </div>
             </div>
           </div>
         ))}
       </div>
 
-      <!-- Trust Signals -->
-      <div class="mt-16 grid grid-cols-1 md:grid-cols-3 gap-6 text-center">
-        {[
-          { icon: '🔒', title: 'Secure Checkout', desc: 'All transactions are encrypted and secure.' },
-          { icon: '📥', title: 'Instant Download', desc: 'Get your PDF immediately after purchase.' },
-          { icon: '♾️', title: 'Lifetime Access', desc: 'Buy once, access forever including updates.' },
-        ].map(item => (
-          <div class="bg-dark-700/50 border border-white/5 rounded-xl p-6">
-            <div class="text-3xl mb-3">{item.icon}</div>
-            <h3 class="text-white font-bold mb-1">{item.title}</h3>
-            <p class="text-gray-500 text-sm">{item.desc}</p>
+      <!-- Bundle Deal -->
+      <div id="bundle" class="mt-12 relative overflow-hidden rounded-2xl border border-yellow-500/30 bg-gradient-to-r from-yellow-900/20 via-dark-800 to-orange-900/20 p-8">
+        <div class="absolute top-0 right-0 w-64 h-64 bg-yellow-500/5 rounded-full blur-3xl pointer-events-none" />
+        <div class="relative flex flex-col md:flex-row items-start md:items-center gap-6">
+          <div class="flex-1">
+            <div class="flex items-center gap-2 mb-2">
+              <span class="bg-yellow-500 text-black text-xs font-bold px-3 py-1 rounded-full uppercase tracking-wider">Best Value</span>
+              <span class="text-yellow-400 text-sm font-semibold">Save $74</span>
+            </div>
+            <h2 class="text-2xl md:text-3xl font-display tracking-wide text-white mb-2">The Complete Bundle</h2>
+            <p class="text-gray-400 text-sm mb-3">All 3 programs + full nutrition system + supplement guide. Everything you need for a full year of anime-inspired training.</p>
+            <ul class="flex flex-wrap gap-x-6 gap-y-1 text-xs text-gray-400">
+              {['Saiyan Hypertrophy', 'Demon Slayer Agility', 'Ninja Endurance', 'Master Nutrition Guide', 'Supplement Stack PDF'].map(f => (
+                <li class="flex items-center gap-1">
+                  <span class="text-yellow-400">✓</span> {f}
+                </li>
+              ))}
+            </ul>
           </div>
+          <div class="flex flex-col items-center gap-3 flex-shrink-0 text-center min-w-[160px]">
+            <div>
+              <div class="flex items-baseline gap-2 justify-center">
+                <span class="text-4xl font-display text-white">$67</span>
+                <span class="text-gray-500 line-through text-sm">$141</span>
+              </div>
+              <p class="text-gray-600 text-xs">One-time · Instant download</p>
+            </div>
+            <button
+              class="w-full bg-yellow-500 hover:bg-yellow-400 text-black font-bold px-6 py-3.5 rounded-xl transition-all duration-200 hover:scale-105 active:scale-95 text-sm"
+              onclick="alert('Bundle checkout coming soon! Join the newsletter to get notified + get 20% off at launch.')"
+            >
+              Get the Bundle →
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Trust Signals -->
+      <div class="mt-12 grid grid-cols-2 md:grid-cols-4 gap-4 text-center">
+        {[
+          { icon: '🔒', title: 'Secure Checkout', desc: 'Stripe-encrypted' },
+          { icon: '📥', title: 'Instant Download', desc: 'PDF delivered immediately' },
+          { icon: '♾️', title: 'Lifetime Access', desc: 'Including all updates' },
+          { icon: '↩️', title: '30-Day Guarantee', desc: 'Full refund, no questions' },
+        ].map(item => (
+          <div class="bg-dark-700/50 border border-white/5 rounded-xl p-5">
+            <div class="text-2xl mb-2">{item.icon}</div>
+            <h3 class="text-white font-bold text-sm mb-0.5">{item.title}</h3>
+            <p class="text-gray-500 text-xs">{item.desc}</p>
+          </div>
+        ))}
+      </div>
+    </div>
+
+    <!-- FAQ -->
+    <div class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 pb-16">
+      <h2 class="text-2xl font-display tracking-wide text-white text-center mb-8">
+        Frequently Asked <span class="text-gradient">Questions</span>
+      </h2>
+      <div class="space-y-3">
+        {faqs.map(faq => (
+          <details class="group bg-dark-700 border border-white/5 hover:border-brand-500/20 rounded-xl overflow-hidden transition-colors">
+            <summary class="flex items-center justify-between px-6 py-4 cursor-pointer text-white font-semibold text-sm list-none">
+              {faq.q}
+              <svg class="w-4 h-4 text-gray-400 group-open:rotate-180 transition-transform flex-shrink-0 ml-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+              </svg>
+            </summary>
+            <div class="px-6 pb-4 text-gray-400 text-sm leading-relaxed">{faq.a}</div>
+          </details>
         ))}
       </div>
     </div>
@@ -161,6 +254,7 @@ const programs = [
     <EmailCapture
       title="Not Ready to Buy? Get the Free Version First"
       subtitle="Subscribe and get a free sample workout from each program — no credit card needed."
+      formId="email-programs"
     />
   </div>
 </BaseLayout>
