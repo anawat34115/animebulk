@@ -2,6 +2,7 @@ backend:
   name: github
   repo: anawat34115/animebulk
   branch: main
+  base_url: https://sveltia-cms-auth.pages.dev
 
 media_folder: public/images
 public_folder: /images
