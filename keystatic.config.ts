@@ -2,7 +2,8 @@ import { config, collection, fields } from '@keystatic/core';
 
 export default config({
   storage: {
-    kind: 'local',
+    kind: 'github',
+    repo: 'anawat34115/animebulk',
   },
   ui: {
     brand: {
@@ -48,7 +49,7 @@ export default config({
           fields.text({ label: 'Tag' }),
           {
             label: 'Tags',
-            itemLabel: (props) => props.fields.value.value || 'Tag',
+            itemLabel: (props) => props.value || 'Tag',
           }
         ),
         featured: fields.checkbox({
@@ -118,7 +119,7 @@ export default config({
           fields.text({ label: 'Tag' }),
           {
             label: 'Tags',
-            itemLabel: (props) => props.fields.value.value || 'Tag',
+            itemLabel: (props) => props.value || 'Tag',
           }
         ),
         featured: fields.checkbox({
