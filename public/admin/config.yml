@@ -1,0 +1,63 @@
+backend:
+  name: github
+  repo: https://github.com/anawat34115/animebulk
+  branch: main
+  auth_type: implicit
+  app_id: Ov23lipBrn27xRpEwzZr
+
+media_folder: public/images
+public_folder: /images
+
+collections:
+  - name: blog
+    label: Blog Posts
+    folder: src/content/blog
+    create: true
+    delete: true
+    slug: "{{slug}}"
+    extension: md
+    format: frontmatter
+    fields:
+      - { label: Title, name: title, widget: string }
+      - { label: Description, name: description, widget: text }
+      - { label: Publish Date, name: pubDate, widget: datetime, format: "YYYY-MM-DD" }
+      - { label: Updated Date, name: updatedDate, widget: datetime, format: "YYYY-MM-DD", required: false }
+      - label: Category
+        name: category
+        widget: select
+        options: [anime, training, nutrition, mindset]
+      - label: Tags
+        name: tags
+        widget: list
+        default: []
+      - { label: Featured, name: featured, widget: boolean, default: false }
+      - { label: Hero Image, name: heroImage, widget: string, required: false, hint: "Path like /images/my-image.jpg" }
+      - { label: Body, name: body, widget: markdown }
+
+  - name: workouts
+    label: Workout Routines
+    folder: src/content/workouts
+    create: true
+    delete: true
+    slug: "{{slug}}"
+    extension: md
+    format: frontmatter
+    fields:
+      - { label: Title, name: title, widget: string }
+      - { label: Character Name, name: character, widget: string }
+      - { label: Anime / Series, name: anime, widget: string }
+      - { label: Description, name: description, widget: text }
+      - { label: Publish Date, name: pubDate, widget: datetime, format: "YYYY-MM-DD" }
+      - label: Difficulty
+        name: difficulty
+        widget: select
+        options: [beginner, intermediate, advanced]
+      - { label: Duration, name: duration, widget: string, hint: "e.g. 8 weeks · 4 days/week" }
+      - { label: Goal, name: goal, widget: string, hint: "e.g. Muscle & Strength" }
+      - label: Tags
+        name: tags
+        widget: list
+        default: []
+      - { label: Featured, name: featured, widget: boolean, default: false }
+      - { label: Hero Image, name: heroImage, widget: string, required: false, hint: "Path like /images/my-image.jpg" }
+      - { label: Body, name: body, widget: markdown }
